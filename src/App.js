@@ -20,7 +20,7 @@ class App extends Component {
       0.1,
       1000
     );
-    this.camera.position.z = 5;
+    this.camera.position.z = 10;
     //ADD RENDERER
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setClearColor('#000000');
@@ -71,7 +71,7 @@ onScroll = () => {
 
 addCircle = () => {
   const geometry = new THREE.CircleGeometry(1, 100, 1);
-  const material = new THREE.MeshBasicMaterial({ color: '#ffffff'});
+  const material = new THREE.MeshBasicMaterial({ color: this.state.color});
   const circle = new THREE.Mesh(geometry, material);
   this.scene.add(circle);
   circle.position.set(0, 1, 0);
@@ -80,7 +80,7 @@ addCircle = () => {
 
 addRectangle = () => {
   const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshBasicMaterial({ color: '#333333'});
+  const material = new THREE.MeshBasicMaterial({ color: this.state.color});
   const rect = new THREE.Mesh(geometry, material);
   this.scene.add(rect);
   rect.position.set(1, 0, 0);
@@ -96,15 +96,13 @@ addTriangle = () => {
   this.frameId = requestAnimationFrame(this.renderScene);
 }
 
-// 이거 왜 안나올까..
 addLine = () => {
-  alert('warning!');
-  const material = new THREE.LineBasicMaterial({color: '#ffffff'});
+  const material = new THREE.LineBasicMaterial({color: this.state.color});
   const geometry = new THREE.Geometry();
   geometry.vertices.push(
-    new THREE.Vector3( -10, 0, 0 ),
-    new THREE.Vector3( 0, 10, 0 ),
-    new THREE.Vector3( 10, 0, 0 )
+    new THREE.Vector3( -5, 0, 0 ),
+    new THREE.Vector3( 0, 0, 0 ),
+    new THREE.Vector3( 5, 0, 0 )
   );
   
   const line = new THREE.Line( geometry, material );
@@ -113,9 +111,9 @@ addLine = () => {
   this.frameId = requestAnimationFrame(this.renderScene);
 }
 
-changeColor = (e) => {
+changeColor = (color) => {
   this.setState({
-    color: e.target.value,
+    color,
   });
 }
 
@@ -129,7 +127,12 @@ render(){
         <button onClick={this.addRectangle}>rect</button>
         <button onClick={this.addTriangle}>triangle</button>
         <button onClick={this.addLine}>line</button>
-        <input value={this.state.color} onChange={this.changeColor}/>
+        <div>
+          <div className="color" onClick={() => this.changeColor('#EC7063')} style={{background: '#EC7063'}}/>
+          <div className="color" onClick={() => this.changeColor('#52BE80')} style={{background: '#52BE80'}}/>
+          <div className="color" onClick={() => this.changeColor('#F1C40F')} style={{background: '#F1C40F'}}/>
+          <div className="color" onClick={() => this.changeColor('#EC7063')} style={{background: '#EC7063'}}/>
+        </div>
       </div>
     )
   }
