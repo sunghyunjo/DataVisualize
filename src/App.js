@@ -6,6 +6,11 @@ class App extends Component {
 
   state = {
     color: '#ffffff',
+    isDraging: false,
+    previousMousePosition: {
+      x: 0,
+      y: 0,
+    },
   }
 
   componentDidMount(){
@@ -117,21 +122,75 @@ changeColor = (color) => {
   });
 }
 
+onMouseDown = () => {
+  this.setState({
+    isDraging: true,
+  })
+}
+
+onMouseMove = (e) => {
+  const { previousMousePosition, isDraging} = this.state;
+  const {x, y} = previousMousePosition;
+  const {offsetX, offsetY} = e;
+  const deltaMove = {
+    x: offsetX - x,
+    y: offsetY - y
+  };
+
+  if(isDraging) {
+    const deltaRotationQuaternion = new THREE.Quaternion()
+    .setFromEuler(new THREE.Euler(
+        this.toRadians(deltaMove.y * 1),
+        this.toRadians(deltaMove.x * 1),
+        0,
+        'XYZ'
+    ));
+
+    // 이게 뭔지 잘 모르겟음..
+    // https://threejs.org/docs/index.html#api/en/math/Quaternion
+    // cube.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube.quaternion);
+
+    this.setState({
+      previousMousePosition: {
+        x: e.offsetX,
+        y: e.offsetY
+      }
+    });
+    
+  }
+}
+
+onMouseUp = () => {
+  this.setState({
+    isDraging : false,
+  })
+}
+toRadians = (angle) => {
+	return angle * (Math.PI / 180);
+}
+
+toDegrees = (angle) => {
+	return angle * (180 / Math.PI);
+}
+
 render(){
     return(
       <div
         style={{ width: '100%', height: '100vh' }}
         ref={(mount) => { this.mount = mount }}
+        onMouseDown={this.onMouseDown}
+        onMouseMove={this.onMouseMove}
+        onMouseUp={this.onMouseUp}
       >
         <button onClick={this.addCircle}>circle</button>
         <button onClick={this.addRectangle}>rect</button>
         <button onClick={this.addTriangle}>triangle</button>
         <button onClick={this.addLine}>line</button>
-        <div>
+        <div className="colorContainer">
           <div className="color" onClick={() => this.changeColor('#EC7063')} style={{background: '#EC7063'}}/>
           <div className="color" onClick={() => this.changeColor('#52BE80')} style={{background: '#52BE80'}}/>
           <div className="color" onClick={() => this.changeColor('#F1C40F')} style={{background: '#F1C40F'}}/>
-          <div className="color" onClick={() => this.changeColor('#EC7063')} style={{background: '#EC7063'}}/>
+          <div className="color" onClick={() => this.changeColor('#A569BD')} style={{background: '#A569BD'}}/>
         </div>
       </div>
     )
