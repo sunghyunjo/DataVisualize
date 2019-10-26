@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import * as THREE from "three";
-import { CompressedPixelFormat } from "three";
+// import { OrbitControls } from'three-orbit-controls';
 
 class App extends Component {
 
@@ -25,6 +25,7 @@ class App extends Component {
       0.1,
       1000
     );
+   
     this.camera.position.z = 10;
     //ADD RENDERER
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -32,6 +33,7 @@ class App extends Component {
     this.renderer.setSize(width, height);
     this.mount.appendChild(this.renderer.domElement);
     this.start();
+    // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
   }
 
 componentWillUnmount(){
@@ -129,35 +131,33 @@ onMouseDown = () => {
 }
 
 onMouseMove = (e) => {
-  const { previousMousePosition, isDraging} = this.state;
-  const {x, y} = previousMousePosition;
-  const {offsetX, offsetY} = e;
-  const deltaMove = {
-    x: offsetX - x,
-    y: offsetY - y
-  };
+  // const { previousMousePosition, isDraging} = this.state;
+  // const {x, y} = previousMousePosition;
+  // const {offsetX, offsetY} = e;
+  // const deltaMove = {
+  //   x: offsetX - x,
+  //   y: offsetY - y
+  // };
 
-  if(isDraging) {
-    const deltaRotationQuaternion = new THREE.Quaternion()
-    .setFromEuler(new THREE.Euler(
-        this.toRadians(deltaMove.y * 1),
-        this.toRadians(deltaMove.x * 1),
-        0,
-        'XYZ'
-    ));
+  // if(isDraging) {
+  //   const deltaRotationQuaternion = new THREE.Quaternion()
+  //   .setFromEuler(new THREE.Euler(
+  //       this.toRadians(deltaMove.y * 1),
+  //       this.toRadians(deltaMove.x * 1),
+  //       0,
+  //       'XYZ'
+  //   ));
 
-    // 이게 뭔지 잘 모르겟음..
-    // https://threejs.org/docs/index.html#api/en/math/Quaternion
-    // cube.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube.quaternion);
-
-    this.setState({
-      previousMousePosition: {
-        x: e.offsetX,
-        y: e.offsetY
-      }
-    });
+  //   this.setState({
+  //     previousMousePosition: {
+  //       x: e.offsetX,
+  //       y: e.offsetY
+  //     }
+  //   });
     
-  }
+  // }
+
+  // this.controls.update();
 }
 
 onMouseUp = () => {
